@@ -13,10 +13,15 @@ import com.example.servicepractice.AlarmReceiver;
 import java.util.Date;
 
 public class LongRunningService extends Service {
+    /*沒有remote的話 他還是在主線呈喔 時間太長會anr*/
+
+    /*可以用綁的 特定activity 但是service都可以綁到每個act*/
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    /*執行的時候必跑 其他都跑oncreate*/
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         new Thread(new Runnable() {

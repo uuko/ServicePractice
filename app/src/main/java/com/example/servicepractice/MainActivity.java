@@ -2,6 +2,7 @@ package com.example.servicepractice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -19,6 +20,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button service=findViewById(R.id.service);
         Button AudioRecord=findViewById(R.id.button3);
+        Button notifi=findViewById(R.id.notifi);
+        notifi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent notifi=new Intent(MainActivity.this, NotificationActivity.class);
+                startActivity(notifi);
+            }
+        });
         AudioRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
