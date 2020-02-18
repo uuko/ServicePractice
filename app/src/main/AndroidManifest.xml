@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.LongRunningService"></service>
+        <service android:name=".service.LongRunningService"
+            android:process=":remote"></service>
 
         <receiver android:name=".AlarmReceiver"></receiver>
     </application>
