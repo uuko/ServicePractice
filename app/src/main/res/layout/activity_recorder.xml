@@ -7,11 +7,11 @@
 
     <Button
         android:id="@+id/startRecorder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="95dp"
+        android:layout_height="38dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="开始录制" />
+        android:text="開始錄音" />
 
     <Button
         android:id="@+id/stopRecorder"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="停止录制" />
+        android:text="停止錄音" />
 
     <Button
         android:id="@+id/startPlay"
@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:text="播放录音" />
+        android:text="開始撥放" />
 
     <Button
         android:id="@+id/stopPlay"
-        android:layout_width="wrap_content"
+        android:layout_width="57dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:text="停止播放" />
 
 </RelativeLayout>

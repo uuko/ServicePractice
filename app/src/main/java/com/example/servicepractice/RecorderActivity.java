@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -18,23 +19,28 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class RecorderActivity extends AppCompatActivity  implements View.OnClickListener {
-
+    private String[] permissions = new String[]{
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private List<String> mPermissionList = new ArrayList<>();
     private MediaPlayer mMediaPlayer;
 
     private MediaRecorder mMediaRecorder;
 
     private File audioFile;
-
+    private static final int MY_PERMISSIONS_REQUEST = 1000;
    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recorder);
        Button startRecorder = findViewById(R.id.startRecorder);
        startRecorder.setOnClickListener(this);
-
 
        Button stopRecorder = findViewById(R.id.stopRecorder);
        stopRecorder.setOnClickListener(this);
@@ -47,15 +53,24 @@ public class RecorderActivity extends AppCompatActivity  implements View.OnClick
        stopPlay.setOnClickListener(this);
        mMediaPlayer = new MediaPlayer();
        mMediaRecorder = new MediaRecorder();
+       checkPermissions();
+       /*記得要權限不然會報錯*/
+       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
+               != PackageManager.PERMISSION_GRANTED) {
+           ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.RECORD_AUDIO },
+                   1000);
+       } else {
+           // mic 錄音
+           mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+           // 輸出格式
+           mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
 
-       // mic 錄音
-       mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+           // 編碼格式
+           mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+       }
 
-       // 輸出格式
-       mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
 
-       // 編碼格式
-       mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+
 
        // 目錄
        File sdcard = Environment.getExternalStorageDirectory();
@@ -66,8 +81,23 @@ public class RecorderActivity extends AppCompatActivity  implements View.OnClick
        } catch (IOException e) {
            e.printStackTrace();
        }
+
    }
 
+    private void checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (ContextCompat.checkSelfPermission(this, permissions[i]) !=
+                        PackageManager.PERMISSION_GRANTED) {
+                    mPermissionList.add(permissions[i]);
+                }
+            }
+            if (!mPermissionList.isEmpty()) {
+                String[] permissions = mPermissionList.toArray(new String[mPermissionList.size()]);
+                ActivityCompat.requestPermissions(this, permissions, MY_PERMISSIONS_REQUEST);
+            }
+        }
+    }
 
     private void startRecorder() throws Exception {
         mMediaRecorder.setOutputFile(audioFile.getAbsolutePath());
@@ -103,6 +133,15 @@ public class RecorderActivity extends AppCompatActivity  implements View.OnClick
         mMediaPlayer.stop();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                }
+            }
+        }
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
