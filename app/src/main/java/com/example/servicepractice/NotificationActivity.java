@@ -25,6 +25,7 @@ public class NotificationActivity extends AppCompatActivity {
     private static final String ACTION_UPDATE_NOTIFICATION =
             "com.example.android.Notifaction.ACTION_UPDATE_NOTIFICATION";
     private NotificationReciever notificationReciever;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +56,13 @@ public class NotificationActivity extends AppCompatActivity {
         setbuttonstate(true,false,false);
         registerReceiver(notificationReciever,new IntentFilter(ACTION_UPDATE_NOTIFICATION));
     }
+
     @Override
     public  void onDestroy(){
         unregisterReceiver(notificationReciever);
         super.onDestroy();
     }
+
     public  void updateNotification(){
         Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.mascot_1);
         NotificationCompat.Builder notifybuilder=getNotificationBuilder();
@@ -69,6 +72,7 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.notify(NOTIFICATION_ID,notifybuilder.build());
         setbuttonstate(false,true,true);
     }
+
     public  void  cancelupdateNotification(){
         notificationManager.cancel(NOTIFICATION_ID);
     }
@@ -81,6 +85,7 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.notify(NOTIFICATION_ID, notifyBuilder.build());
         setbuttonstate(false,true,true);
     }
+
     void setbuttonstate(Boolean isNotifyEnabled,Boolean isUpdadateEnabled,Boolean isCancelEnabled){
         Button update=(Button) findViewById(R.id.update);
         Button notify=(Button) findViewById(R.id.notify);
@@ -89,24 +94,25 @@ public class NotificationActivity extends AppCompatActivity {
         update.setEnabled(isUpdadateEnabled);
         cancel.setEnabled(isCancelEnabled);
     }
+
     public void   createNotificationChannel(){
         notificationManager=
-                (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.O){
-            NotificationChannel notificationChannel=
-                    new NotificationChannel(PRIMARY_CHANNEL_ID,
-                            "123" ,NotificationManager.IMPORTANCE_HIGH
-                    );
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("hihi");
+                    (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.O){
+                /*優先程度*/
+                NotificationChannel notificationChannel=
+                        new NotificationChannel(PRIMARY_CHANNEL_ID,
+                                "123" ,NotificationManager.IMPORTANCE_HIGH
+                        );
+                notificationChannel.enableLights(true);
+                notificationChannel.setLightColor(Color.RED);
+                notificationChannel.enableVibration(true);
+                notificationChannel.setDescription("hihi");
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
 
     private NotificationCompat.Builder getNotificationBuilder(){
-
         Intent notifyIntent=new Intent(this,MainActivity.class);
         PendingIntent notifyPendingIntent=PendingIntent.getActivity(this,
                 NOTIFICATION_ID,notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -122,13 +128,11 @@ public class NotificationActivity extends AppCompatActivity {
 
     public class  NotificationReciever extends BroadcastReceiver {
         public NotificationReciever(){
-
         }
 
         @Override
         public void onReceive(Context context, Intent intent) {
             updateNotification();
         }
-
     }
 }
