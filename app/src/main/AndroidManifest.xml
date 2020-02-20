@@ -29,9 +29,11 @@
 
         <service
             android:name=".service.LongRunningService"
-            android:process=":remote" />
+            />
 
         <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".AlertReceiver" >
+        </receiver>
     </application>
 
 </manifest>

@@ -41,6 +41,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
     /*
     * 跟另一個插在這個適合持續撥放不用解碼
+    * AudioTrack 则更接近底层，提供了非常强大的控制能力，支持低延迟播放，适合流媒体和VoIP语音电话等场景。
     * 而且這個是底層的
     * */
     private String[] permissions = new String[]{
